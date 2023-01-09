@@ -1,14 +1,16 @@
 import { Dimensions, TextStyle, ViewStyle } from 'react-native'
+import Colors from './constants/Colors'
 
 export const TEXT_INPUT_STYLE: TextStyle = {
-  height: 50,
-  width: Dimensions.get('window').width - 10,
-  borderWidth: 1,
+  height: Dimensions.get('window').height / 18,
+  width: Dimensions.get('window').width - 40,
+  borderWidth: 2,
   fontSize: 20,
-  color: 'white',
-  borderColor: 'white',
+  color: Colors.dark.text,
+  borderColor: Colors.light.tint,
   borderRadius: 10,
   paddingLeft: 20,
+  marginRight: 5,
 }
 
 export const RESPONSE_STYLE: TextStyle = {

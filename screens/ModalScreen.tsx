@@ -21,9 +21,7 @@ export default function ModalScreen(props: ModalScreenProps) {
   }, [])
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{parameter}</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <Text>{description}</Text>
+      <Text style={styles.text}>{description}</Text>
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
@@ -35,12 +33,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
+  },
+  text: {
+    fontSize: 16,
+    color: 'white',
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
   },
   separator: {
     marginVertical: 30,
