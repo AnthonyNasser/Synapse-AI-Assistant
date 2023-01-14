@@ -16,7 +16,7 @@ export default function TabTwoScreen({ navigation }: RootTabScreenProps<'ChatGPT
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         {context.keyTested ? (
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#000000' }}>
             <Text style={styles.title}>API Key: {context.apiKey.substring(0, 5) + '...' + context.apiKey.substring(context.apiKey.length - 5)}</Text>
             <FontAwesome5 name="check-circle" size={24} style={{ marginLeft: 10 }} color="green" />
           </View>
@@ -39,17 +39,16 @@ export default function TabTwoScreen({ navigation }: RootTabScreenProps<'ChatGPT
                 borderColor: !context.keyTested ? 'red' : 'green',
                 borderWidth: 1,
                 paddingLeft: 10,
-                marginLeft: 20,
-                marginRight: 20,
+                marginHorizontal: 20,
                 marginTop: 10,
+                paddingRight: 10,
               }}
             />
             <Pressable
               onPress={() =>
                 navigation.navigate('Modal', {
                   parameter: 'API Key',
-                  description: `In OpenAI's API, the "max_tokens" parameter determines the maximum number of tokens (i.e., words and word pieces) that the model will consider when generating text. This can be used to limit the length of the generated text or to ensure that the model does not spend too much time or computational resources on a single request.
-        \nOne reason you might want to limit the number of tokens in your OpenAI queries is to save time and resources. Generating long pieces of text can be computationally expensive, and if you only need a short piece of text or are making many requests in a short period of time, limiting the number of tokens can help you stay within your usage limits and avoid running out of resources. Limiting the number of tokens can also be useful if you want to ensure that the model stays focused on a specific topic or prompt and does not generate unrelated or tangential text.`,
+                  description: ``,
                   navigation: navigation,
                 } as any)
               }
@@ -80,6 +79,7 @@ export default function TabTwoScreen({ navigation }: RootTabScreenProps<'ChatGPT
                 borderRadius: 5,
                 padding: 10,
                 alignItems: 'center',
+                marginTop: 10,
               }}
             >
               <FontAwesome5 name="key" size={25} color="white" />
@@ -109,6 +109,7 @@ export default function TabTwoScreen({ navigation }: RootTabScreenProps<'ChatGPT
                 borderRadius: 5,
                 padding: 10,
                 alignItems: 'center',
+                marginTop: 10,
               }}
             >
               <FontAwesome5 name="key" size={25} color="white" />
@@ -132,6 +133,7 @@ export default function TabTwoScreen({ navigation }: RootTabScreenProps<'ChatGPT
             height: Dimensions.get('window').height * 0.05,
             justifyContent: 'center',
             alignItems: 'center',
+            backgroundColor: '#000000',
           }}
         >
           <AnimatedLottieView source={require('../assets/animations/loading.json')} autoPlay loop />
@@ -207,22 +209,21 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     marginTop: 30,
+    backgroundColor: '#000000',
+    color: '#FFF',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 25,
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    color: '#FFF',
   },
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '90%',
-    marginVertical: 20,
+    marginTop: 30,
+    backgroundColor: '#000000',
   },
 })

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "chat_gpt_app",
-    "slug": "chat_gpt_app",
+    "slug": "chat-gpt-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/chat_gpt_app_icon.png",
@@ -15,9 +15,12 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anthonynasser.chatgptapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,6 +30,11 @@
     },
     "web": {
       "favicon": "./assets/images/chat_gpt_app_icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "68918400-001e-4524-b113-a647da6ec8fa"
+      }
     }
   }
 }

@@ -22,7 +22,8 @@ import { useGlobalContext } from '../Context'
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
-    <NavigationContainer linking={LinkingConfiguration} theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    // TODO: implement light colortheme
+    <NavigationContainer linking={LinkingConfiguration} theme={DarkTheme}>
       <RootNavigator />
     </NavigationContainer>
   )
@@ -89,7 +90,7 @@ function BottomTabNavigator() {
                     opacity: pressed ? 0.5 : 1,
                   })}
                 >
-                  <FontAwesome name="trash" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
+                  <FontAwesome name="trash" size={25} color="#FFFFFF" style={{ marginRight: 15 }} />
                 </Pressable>
               )}
             </>

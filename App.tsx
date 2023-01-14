@@ -5,6 +5,7 @@ import { GlobalContextProvider } from './Context'
 import useCachedResources from './hooks/useCachedResources'
 import useColorScheme from './hooks/useColorScheme'
 import Navigation from './navigation'
+import { useEffect } from 'react'
 
 export default function App() {
   const isLoadingComplete = useCachedResources()

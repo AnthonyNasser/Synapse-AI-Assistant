@@ -4,6 +4,7 @@ import { Platform, StyleSheet } from 'react-native'
 
 import EditScreenInfo from '../components/EditScreenInfo'
 import { Text, View } from '../components/Themed'
+import APIKeyInstructions from '../components/APIKeyInstructions'
 
 type ModalScreenProps = {
   parameter?: string
@@ -19,9 +20,10 @@ export default function ModalScreen(props: ModalScreenProps) {
   useEffect(() => {
     navigation.setOptions({ title: parameter })
   }, [])
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{description}</Text>
+      {parameter === 'API Key' ? <APIKeyInstructions /> : <Text style={styles.text}>{description}</Text>}
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
@@ -34,15 +36,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    backgroundColor: '#000',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'white',
+    color: '#FFF',
   },
   text: {
     fontSize: 16,
-    color: 'white',
+    color: '#FFF',
     paddingTop: 20,
     paddingHorizontal: 20,
     justifyContent: 'center',

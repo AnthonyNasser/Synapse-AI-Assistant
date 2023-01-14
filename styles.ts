@@ -4,12 +4,13 @@ import Colors from './constants/Colors'
 export const TEXT_INPUT_STYLE: TextStyle = {
   height: Dimensions.get('window').height / 18,
   width: Dimensions.get('window').width - 40,
-  borderWidth: 2,
+  borderWidth: 0.5,
   fontSize: 20,
-  color: Colors.dark.text,
-  borderColor: Colors.light.tint,
+  color: '#FFFFFF',
+  borderColor: '#ffffff',
+  backgroundColor: '#1C1C1C',
   borderRadius: 10,
-  paddingLeft: 20,
+  paddingHorizontal: 20,
   marginRight: 5,
 }
 

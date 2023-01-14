@@ -1,6 +1,5 @@
 import { FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { Pressable, StyleSheet } from 'react-native'
-import Colors from '../constants/Colors'
 import { Text, View } from './Themed'
 import { useState } from 'react'
 import * as Clipboard from 'expo-clipboard'
@@ -12,7 +11,6 @@ type ChatBoxProps = {
 
 export default function ChatBox(props: ChatBoxProps) {
   const { prompt, response } = props
-  const [copiedText, setCopiedText] = useState<string>('')
   const [copied, setCopied] = useState<boolean>(false)
 
   const copyToClipboard = async () => {
@@ -29,10 +27,14 @@ export default function ChatBox(props: ChatBoxProps) {
   //   }
 
   return (
-    <View>
+    <View
+      style={{
+        backgroundColor: '#000000',
+      }}
+    >
       <Text
         style={{
-          color: Colors.light.tint,
+          color: '#ccc',
           fontSize: 16,
           flex: 1,
           fontWeight: 'bold',
@@ -46,7 +48,7 @@ export default function ChatBox(props: ChatBoxProps) {
       <View style={styles.box}>
         <Text
           style={{
-            color: Colors.light.tint,
+            color: '#bfbfbf',
             fontSize: 16,
             flex: 1,
           }}
@@ -60,7 +62,7 @@ export default function ChatBox(props: ChatBoxProps) {
             <Ionicons
               name="copy"
               size={30}
-              color={Colors.light.tint + '80'}
+              color={'#bfbfbf' + '80'}
               style={{
                 paddingLeft: 15,
                 width: 55,
@@ -77,9 +79,9 @@ const styles = StyleSheet.create({
   box: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.light.tint + '20',
+    backgroundColor: '#1C1C1C',
     width: '100%',
-    borderColor: Colors.light.tint + '50',
+    borderColor: '#bfbfbf' + '50',
     borderTopWidth: 1,
     borderBottomWidth: 1,
     padding: 15,

@@ -53,7 +53,13 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'ChatGPT
         }
       })
       .catch((error: any) => {
-        console.error(error)
+        // console.error(error)
+        context.setChatBoxes([
+          {
+            prompt: 'Request Failed',
+            response: 'Please save a valid API Key in Settings.',
+          },
+        ])
       })
     setLoading(false)
   }
@@ -78,6 +84,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'ChatGPT
               height: Dimensions.get('window').height * 0.2,
               justifyContent: 'center',
               alignItems: 'center',
+              backgroundColor: '#000000',
             }}
           >
             <AnimatedLottieView source={require('../assets/animations/loading.json')} autoPlay loop />
@@ -91,11 +98,18 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'ChatGPT
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
+          backgroundColor: '#000000',
         }}
         enabled
       >
-        <View style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
-          <TextInput placeholder="Enter a prompt..." style={TEXT_INPUT_STYLE} value={prompt} onChangeText={setPrompt} />
+        <View style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center', backgroundColor: '#000000' }}>
+          <TextInput
+            placeholder="Enter a prompt..."
+            style={TEXT_INPUT_STYLE}
+            value={prompt}
+            onChangeText={setPrompt}
+            placeholderTextColor="#5a5a5a"
+          />
           <TouchableOpacity
             style={{
               alignSelf: 'flex-end',
