@@ -1,15 +1,16 @@
 import { Entypo, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons'
 import { Dimensions, Pressable, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import styles from "./styles"
 
-import { Text, View } from '../components/Themed'
+import { Text, View } from '../../components/Themed'
 import Slider from '@react-native-community/slider'
-import { useGlobalContext } from '../Context'
-import { RootTabScreenProps } from '../types'
+import { useGlobalContext } from '../../Context'
+import { RootTabScreenProps } from '../../types'
 import { useEffect, useState } from 'react'
-import { getContext, storeContext } from '../utils/storage'
-import clogger from '../utils/logger'
-import ScreenLoader from '../components/ScreenLoader'
+import { getContext, storeContext } from '../../utils/storage'
+import ScreenLoader from '../../components/ScreenLoader'
 import { Picker } from '@react-native-picker/picker'
+
 
 export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'>) {
   const context = useGlobalContext()
@@ -57,20 +58,7 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
                   }}
                   placeholder="Enter API Key"
                   placeholderTextColor="#5a5a5a"
-                  style={{
-                    color: 'white',
-                    fontSize: 16,
-                    width: '100%',
-                    height: 60,
-                    backgroundColor: '#1F1F1F',
-                    borderRadius: 7,
-                    borderColor: !context.keyTested ? '#ba000d' : 'green',
-                    borderWidth: 1,
-                    paddingLeft: 10,
-                    marginHorizontal: 15,
-                    marginTop: 10,
-                    paddingRight: 10,
-                  }}
+                  style={{...styles.textInput, borderColor: !context.keyTested ? '#ba000d' : 'green',}}
                 />
                 {/* <Pressable
                   onPress={() =>
@@ -93,36 +81,22 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
           {!loading ? (
             <>
               {!context.keyTested ? (
-                <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#000000', alignSelf: 'flex-start' }}>
+                <View style={styles.apiButtonContainer}>
                   <TouchableOpacity
                     onPress={async () => {
-                      setLoading(true)
-                      context.onSave()
-                      await context.testAPIKey()
-                      storeContext(context)
-                      setLoading(false)
+                      if(context.apiKey) {
+                        setLoading(true)
+                        context.onSave()
+                        await context.testAPIKey()
+                        storeContext(context)
+                        setLoading(false)
+                      }
                     }}
-                    style={{
-                      flexDirection: 'row',
-                      marginLeft: 20,
-                      borderWidth: 1,
-                      borderColor: 'white',
-                      borderRadius: 5,
-                      padding: 10,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginTop: 10,
-                      width: Dimensions.get('window').width / 2.5,
-                    }}
+                    style={styles.button}
                   >
                     <FontAwesome5 name="key" size={25} color="white" />
                     <Text
-                      style={{
-                        color: 'white',
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        marginLeft: 10,
-                      }}
+                      style={styles.buttonText}
                     >
                       Save Key
                     </Text>
@@ -135,28 +109,10 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
                         navigation: navigation,
                       } as any)
                     }}
-                    style={{
-                      flexDirection: 'row',
-                      marginLeft: 20,
-                      borderWidth: 1,
-                      borderColor: 'white',
-                      borderRadius: 5,
-                      padding: 10,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginTop: 10,
-                      width: Dimensions.get('window').width / 2.3,
-                    }}
+                    style={styles.button}
                   >
                     <FontAwesome5 name="question-circle" size={25} color="white" />
-                    <Text
-                      style={{
-                        color: 'white',
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        marginLeft: 10,
-                      }}
-                    >
+                    <Text style={styles.buttonText}>
                       Get a Key
                     </Text>
                   </TouchableOpacity>
@@ -168,25 +124,11 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
                     context.setKeyTested(false)
                     setLoading(false)
                   }}
-                  style={{
-                    flexDirection: 'row',
-                    marginLeft: 20,
-                    borderWidth: 1,
-                    borderColor: 'white',
-                    borderRadius: 5,
-                    padding: 10,
-                    alignItems: 'center',
-                    marginTop: 10,
-                  }}
+                  style={styles.button}
                 >
                   <FontAwesome5 name="key" size={25} color="white" />
                   <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                      marginLeft: 10,
-                    }}
+                    style={styles.buttonText}
                   >
                     Change Key
                   </Text>
@@ -357,16 +299,7 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
             </Pressable>
           </View>
           <Slider
-            style={{
-              height: 75,
-              width: Dimensions.get('window').width * 0.92,
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              backgroundColor: '#1F1F1F',
-              borderRadius: 10,
-              marginTop: 20,
-            }}
+            style={styles.slider}
             minimumValue={16}
             maximumValue={2048}
             minimumTrackTintColor="#FFFFFF"
@@ -397,16 +330,7 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
             </Pressable>
           </View>
           <Slider
-            style={{
-              height: 75,
-              width: Dimensions.get('window').width * 0.92,
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              backgroundColor: '#1F1F1F',
-              borderRadius: 10,
-              marginTop: 20,
-            }}
+            style={styles.slider}
             minimumValue={0.1}
             maximumValue={1.0}
             minimumTrackTintColor="#FFFFFF"
@@ -421,29 +345,3 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    marginTop: 15,
-    backgroundColor: '#000000',
-    color: '#FFF',
-    paddingBottom: 35,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginLeft: 25,
-    color: '#FFF',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '90%',
-    marginTop: 30,
-    backgroundColor: '#000000',
-  },
-})
