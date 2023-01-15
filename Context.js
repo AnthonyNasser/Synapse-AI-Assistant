@@ -1,6 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { Configuration, OpenAIApi } from 'openai'
+import { getAPIKey, storeAPIKey, storeContext } from './utils/storage'
+import { configureOpenAI } from './services/openai/config'
+import clogger from './utils/logger'
 
 const GlobalContext = createContext()
 
@@ -8,33 +10,15 @@ export function useGlobalContext() {
   return useContext(GlobalContext)
 }
 
-export const ASYNCH_STORAGE_API_KEY = '@AYNCH_STORAGE_API_KEY'
-
 export function GlobalContextProvider({ children }) {
   const [apiKey, setApiKey] = useState('')
+  const [model, setModel] = useState('text-davinci-003')
   const [maxTokens, setMaxTokens] = useState(100)
   const [temperature, setTemperature] = useState(0.9)
   const [chatBoxes, setChatBoxes] = useState([])
-  const [keyTested, setKeyTested] = useState(null)
+  const [keyTested, setKeyTested] = useState(false)
 
-  const getAPIKey = async () => {
-    try {
-      const value = await AsyncStorage.getItem('@AYNCH_STORAGE_API_KEY')
-      if (value !== null) {
-        setApiKey(value)
-      }
-    } catch (e) {
-      console.error('Error Retrieving State: ', e)
-    }
-  }
-
-  const storeAPIKey = async (value) => {
-    try {
-      await AsyncStorage.setItem(ASYNCH_STORAGE_API_KEY, value)
-    } catch (e) {
-      console.error('Error Saving State: ', e)
-    }
-  }
+  const [prompt, setPrompt] = useState('')
 
   const testAPIKey = async () => {
     if (apiKey !== '') {
@@ -42,6 +26,7 @@ export function GlobalContextProvider({ children }) {
         apiKey: apiKey,
       })
       const openai = new OpenAIApi(configuration)
+      // TODO: put this in the openai folder like textCompletion
       await openai
         .createCompletion({
           model: 'text-davinci-003',
@@ -52,19 +37,29 @@ export function GlobalContextProvider({ children }) {
         .then((completion) => {
           if (completion.status === 200) {
             setKeyTested(true)
+            clogger.success("API Key set to: '" + apiKey + "'")
           }
-          console.log(keyTested)
+        })
+        .then(() => {
+          clogger.success("API Key Tested: '" + keyTested ? 'Success' : 'Failure' + "'")
         })
         .catch((error) => {
-          console.error(error)
+          clogger.error("Error setting API Key: '" + apiKey + "'")
           setKeyTested(false)
-          console.log(keyTested)
         })
+    } else {
+      clogger.error('API Key is empty')
+      setKeyTested(false)
     }
   }
 
   useEffect(() => {
-    getAPIKey()
+    getAPIKey().then((value) => {
+      if (value !== null) {
+        setApiKey(value)
+      }
+    })
+    configureOpenAI()
   }, [])
 
   const clearChatBoxes = () => {
@@ -89,6 +84,10 @@ export function GlobalContextProvider({ children }) {
     keyTested,
     setKeyTested,
     testAPIKey,
+    prompt,
+    setPrompt,
+    model,
+    setModel,
   }
 
   return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>

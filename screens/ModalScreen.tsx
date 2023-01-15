@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
-import { Platform, StyleSheet } from 'react-native'
+import { Platform, ScrollView, StyleSheet } from 'react-native'
 
 import EditScreenInfo from '../components/EditScreenInfo'
 import { Text, View } from '../components/Themed'
@@ -18,25 +18,32 @@ export default function ModalScreen(props: ModalScreenProps) {
   const { navigation } = props
 
   useEffect(() => {
-    navigation.setOptions({ title: parameter })
+    navigation.setOptions({
+      title: parameter,
+      headerRight: () => (
+        <Text style={{ color: '#FFF', paddingRight: 20 }} onPress={() => navigation.navigate('Settings')}>
+          Done
+        </Text>
+      ),
+    })
   }, [])
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {parameter === 'API Key' ? <APIKeyInstructions /> : <Text style={styles.text}>{description}</Text>}
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-    </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: '#000',
+    paddingVertical: 20,
   },
   title: {
     fontSize: 20,

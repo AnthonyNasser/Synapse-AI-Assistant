@@ -48,6 +48,45 @@ export default function APIKeyInstructions() {
       <View style={{ alignItems: 'flex-start' }}>
         <Text style={{ ...styles.text, fontWeight: 'bold', textAlign: 'left', fontSize: 20 }}>7) Paste the key into this app</Text>
       </View>
+      <View style={{ alignItems: 'flex-start' }}>
+        <Text style={{ ...styles.text, fontWeight: 'bold', textAlign: 'left', fontSize: 20 }}>8) Tap on Save Key</Text>
+      </View>
+      <Text style={{ ...styles.text, marginBottom: 10 }}>
+        Please note that if saving your key doesn't work right away, OpenAI is likely down and you should try again later. It is also possible that
+        you exceeded your accounts API request limit. See the following OpenAI forum for more help.
+      </Text>
+      <Pressable onPress={() => Linking.openURL('https://status.openai.com/')}>
+        <Text
+          style={{
+            ...styles.text,
+            textAlign: 'left',
+            fontSize: 18,
+            textDecorationColor: '#FFF',
+            textDecorationLine: 'underline',
+            marginBottom: 5,
+          }}
+        >
+          OpenAI Status
+        </Text>
+      </Pressable>
+      <Pressable onPress={() => Linking.openURL('https://help.openai.com/en/articles/6613629-why-can-t-i-log-in-to-openai-api')}>
+        <Text
+          style={{
+            ...styles.text,
+            textAlign: 'left',
+            fontSize: 18,
+            textDecorationColor: '#FFF',
+            textDecorationLine: 'underline',
+            marginBottom: 5,
+          }}
+        >
+          Login Help Forum
+        </Text>
+      </Pressable>
+      <Text style={{ ...styles.text, marginBottom: 50 }}>
+        This app is not affiliated with OpenAI, and is not endorsed by them. This app is provided as is, and is not guaranteed to work at any time.
+        This app does not store your API Key, it is stored locally on your device.
+      </Text>
     </ScrollView>
   )
 }

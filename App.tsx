@@ -6,10 +6,15 @@ import useCachedResources from './hooks/useCachedResources'
 import useColorScheme from './hooks/useColorScheme'
 import Navigation from './navigation'
 import { useEffect } from 'react'
+import clogger from './utils/logger'
 
 export default function App() {
   const isLoadingComplete = useCachedResources()
   const colorScheme = useColorScheme()
+
+  useEffect(() => {
+    clogger.info('App mounted ======================\n')
+  }, [])
 
   if (!isLoadingComplete) {
     return null

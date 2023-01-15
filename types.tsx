@@ -22,7 +22,7 @@ export type RootStackParamList = {
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<RootStackParamList, Screen>
 
 export type RootTabParamList = {
-  ChatGPT: undefined
+  Chat: undefined
   Settings: undefined
 }
 
