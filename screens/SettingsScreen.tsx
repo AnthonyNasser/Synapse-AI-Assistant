@@ -1,4 +1,4 @@
-import { FontAwesome5 } from '@expo/vector-icons'
+import { Entypo, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons'
 import { Dimensions, Pressable, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 
 import { Text, View } from '../components/Themed'
@@ -232,7 +232,89 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
               <FontAwesome5 name="question-circle" size={25} color="white" />
             </Pressable>
           </View>
-          <Picker
+          <View style={{ flexDirection: 'row', alignSelf: 'flex-start', marginTop: 20 }}>
+            <Pressable
+              style={{
+                width: (Dimensions.get('window').width * 0.92) / 2.3,
+                flexDirection: 'row',
+                backgroundColor: context.model === 'text-davinci-003' ? 'white' : '#1F1F1F',
+                height: 75,
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                marginLeft: 20,
+                borderRadius: 10,
+                marginRight: 25,
+              }}
+              onPress={() => {
+                context.setModel('text-davinci-003')
+              }}
+            >
+              <FontAwesome5 name="paint-brush" size={25} color={context.model === 'text-davinci-003' ? '#1F1F1F' : 'white'} style={{}} />
+              <Text style={{ ...styles.title, color: context.model === 'text-davinci-003' ? '#1F1F1F' : 'white' }}>Davinci</Text>
+            </Pressable>
+            <Pressable
+              style={{
+                width: (Dimensions.get('window').width * 0.92) / 2.3,
+                flexDirection: 'row',
+                backgroundColor: context.model === 'text-curie-001' ? 'white' : '#1F1F1F',
+                height: 75,
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                alignSelf: 'center',
+                paddingHorizontal: 10,
+
+                borderRadius: 10,
+              }}
+              onPress={() => {
+                context.setModel('text-curie-001')
+              }}
+            >
+              <FontAwesome5 name="atom" size={25} color={context.model === 'text-curie-001' ? '#1F1F1F' : 'white'} style={{ marginLeft: 25 }} />
+              <Text style={{ ...styles.title, color: context.model === 'text-curie-001' ? '#1F1F1F' : 'white' }}>Curie</Text>
+            </Pressable>
+          </View>
+          <View style={{ flexDirection: 'row', alignSelf: 'flex-start', marginTop: 20 }}>
+            <Pressable
+              style={{
+                width: (Dimensions.get('window').width * 0.92) / 2.3,
+                flexDirection: 'row',
+                backgroundColor: context.model === 'text-babbage-001' ? 'white' : '#1F1F1F',
+                height: 75,
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                marginLeft: 20,
+                borderRadius: 10,
+                marginRight: 25,
+              }}
+              onPress={() => {
+                context.setModel('text-babbage-001')
+              }}
+            >
+              <MaterialCommunityIcons name="abacus" size={25} color={context.model === 'text-babbage-001' ? '#1F1F1F' : 'white'} style={{}} />
+              <Text style={{ ...styles.title, color: context.model === 'text-babbage-001' ? '#1F1F1F' : 'white' }}>Babbage</Text>
+            </Pressable>
+            <Pressable
+              style={{
+                width: (Dimensions.get('window').width * 0.92) / 2.3,
+                flexDirection: 'row',
+                backgroundColor: context.model === 'text-ada-001' ? 'white' : '#1F1F1F',
+                height: 75,
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                borderRadius: 10,
+              }}
+              onPress={() => {
+                context.setModel('text-ada-001')
+              }}
+            >
+              <Entypo name="classic-computer" size={25} color={context.model === 'text-ada-001' ? '#1F1F1F' : 'white'} style={{}} />
+              <Text style={{ ...styles.title, color: context.model === 'text-ada-001' ? '#1F1F1F' : 'white' }}>Ada</Text>
+            </Pressable>
+          </View>
+          {/* <Picker
             selectedValue={context.model}
             style={{
               width: Dimensions.get('window').width * 0.92,
@@ -247,15 +329,15 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
             }}
             itemStyle={{ color: 'white' }}
             dropdownIconColor="white"
-            mode="dropdown"
             numberOfLines={2}
+            focusable={true}
             onValueChange={(itemValue, itemIndex) => context.setModel(itemValue)}
           >
             <Picker.Item label="Davinci" value="text-davinci-003" />
             <Picker.Item label="Curie" value="text-curie-001" />
             <Picker.Item label="Babbage" value="text-babbage-001" />
             <Picker.Item label="Ada" value="text-ada-001" />
-          </Picker>
+          </Picker> */}
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Max Tokens = {context.maxTokens}</Text>
             <Pressable

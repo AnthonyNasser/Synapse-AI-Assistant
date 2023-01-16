@@ -2,34 +2,32 @@
   "expo": {
     "name": "chat_gpt_app",
     "slug": "chat-gpt-app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/chat_gpt_app_icon.png",
+    "icon": "./assets/images/OpenAI-Explorer-Logo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/chat_gpt_app_icon.png",
+      "image": "./assets/images/OpenAI-Explorer-Logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anthonynasser.chatgptapp"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/chat_gpt_app_icon.png",
+        "foregroundImage": "./assets/images/OpenAI-Explorer-Logo.png",
         "backgroundColor": "#000000"
       }
     },
     "web": {
-      "favicon": "./assets/images/chat_gpt_app_icon.png"
+      "favicon": "./assets/images/OpenAI-Explorer-Logo.png"
     },
     "extra": {
       "eas": {
