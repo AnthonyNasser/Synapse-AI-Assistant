@@ -9,9 +9,14 @@ import { FontAwesome5 } from '@expo/vector-icons'
 import ChatBox from '../../components/ChatBox'
 import AnimatedLottieView from 'lottie-react-native'
 import makeTextCompletionRequest from '../../services/openai/textCompletionRequest'
-import { getContext } from '../../utils/storage'
+import { getContext, storeContext} from '../../utils/storage'
 import ScreenLoader from '../../components/ScreenLoader'
 import styles from "./styles"
+import * as StoreReview from 'expo-store-review';
+import clogger from '../../utils/logger'
+
+const SHORT_RANDOM_THRESHOLD = 100;
+const LONG_RANDOM_THRESHOLD = 25;
 
 export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
   const context = useGlobalContext()
@@ -56,7 +61,16 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
     context.setPrompt('')
     const response: any = await makeTextCompletionRequest(context.apiKey, context.model, prompt, context.temperature, context.maxTokens)
     if (response && response !== '400') {
-      context.setChatBoxes([...context.chatBoxes, { prompt: prompt.trim(), response: response.trim() }])
+      const newChatBoxes = [...context.chatBoxes, {prompt: prompt.trim(), response: response.trim()}]
+      context.setChatBoxes(newChatBoxes)
+      storeContext({...context, chatBoxes: newChatBoxes})
+
+      const isLongResponse = response.trim().length > 500;
+      const randomNumber = isLongResponse ? Math.floor(Math.random() * LONG_RANDOM_THRESHOLD) : Math.floor(Math.random() * SHORT_RANDOM_THRESHOLD)
+      if(randomNumber === 0 && await StoreReview.hasAction() && await StoreReview.isAvailableAsync()) {
+        clogger.info("Requesting Review...")
+        StoreReview.requestReview();
+      }
     } else {
       context.setChatBoxes([
         {
