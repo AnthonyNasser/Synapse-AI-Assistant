@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { getContext, storeContext } from '../../utils/storage'
 import ScreenLoader from '../../components/ScreenLoader'
 import { Picker } from '@react-native-picker/picker'
+import clogger from '../../utils/logger'
 
 
 export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'>) {
@@ -88,7 +89,6 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
                         setLoading(true)
                         context.onSave()
                         await context.testAPIKey()
-                        storeContext(context)
                         setLoading(false)
                       }
                     }}
