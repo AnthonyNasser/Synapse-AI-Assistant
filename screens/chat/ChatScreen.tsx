@@ -1,17 +1,22 @@
-import { Dimensions, KeyboardAvoidingView, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
-import { View } from '../components/Themed'
-import { RootTabScreenProps } from '../types'
+import { KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native'
+import { View } from '../../components/Themed'
+import { RootTabScreenProps } from '../../types'
 import 'react-native-url-polyfill/auto'
 import React, { useEffect, useRef, useState } from 'react'
-import { useGlobalContext } from '../Context'
-import { TEXT_INPUT_STYLE } from '../styles'
+import { useGlobalContext } from '../../Context'
+import { TEXT_INPUT_STYLE } from '../../styles'
 import { FontAwesome5 } from '@expo/vector-icons'
-import ChatBox from '../components/ChatBox'
+import ChatBox from '../../components/ChatBox'
 import AnimatedLottieView from 'lottie-react-native'
-import makeTextCompletionRequest from '../services/openai/textCompletionRequest'
-import { getContext } from '../utils/storage'
-import ScreenLoader from '../components/ScreenLoader'
-// import clogger from '../utils/logger'
+import makeTextCompletionRequest from '../../services/openai/textCompletionRequest'
+import { getContext, storeContext} from '../../utils/storage'
+import ScreenLoader from '../../components/ScreenLoader'
+import styles from "./styles"
+import * as StoreReview from 'expo-store-review';
+import clogger from '../../utils/logger'
+
+const SHORT_RANDOM_THRESHOLD = 100;
+const LONG_RANDOM_THRESHOLD = 25;
 
 export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
   const context = useGlobalContext()
@@ -24,8 +29,9 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
     setTimeout(() => {
       // setTimout is temporary solution to a bug
       getContext().then((storedContext: any) => {
-        const { apiKey, temperature, maxTokens, chatBoxes, keyTested } = JSON.parse(storedContext)
         if (storedContext) {
+          const { apiKey, temperature, maxTokens, chatBoxes, keyTested } = JSON.parse(storedContext)
+
           context.setApiKey(apiKey)
           context.setTemperature(temperature)
           context.setMaxTokens(maxTokens)
@@ -55,7 +61,16 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
     context.setPrompt('')
     const response: any = await makeTextCompletionRequest(context.apiKey, context.model, prompt, context.temperature, context.maxTokens)
     if (response && response !== '400') {
-      context.setChatBoxes([...context.chatBoxes, { prompt: prompt.trim(), response: response.trim() }])
+      const newChatBoxes = [...context.chatBoxes, {prompt: prompt.trim(), response: response.trim()}]
+      context.setChatBoxes(newChatBoxes)
+      storeContext({...context, chatBoxes: newChatBoxes})
+
+      const isLongResponse = response.trim().length > 500;
+      const randomNumber = isLongResponse ? Math.floor(Math.random() * LONG_RANDOM_THRESHOLD) : Math.floor(Math.random() * SHORT_RANDOM_THRESHOLD)
+      if(randomNumber === 0 && await StoreReview.hasAction() && await StoreReview.isAvailableAsync()) {
+        clogger.info("Requesting Review...")
+        StoreReview.requestReview();
+      }
     } else {
       context.setChatBoxes([
         {
@@ -86,16 +101,8 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
               return <ChatBox key={index} prompt={chatBox.prompt} response={chatBox.response} setLoading={setLoading} />
             })}
             {loading ? (
-              <View
-                style={{
-                  width: Dimensions.get('window').width,
-                  height: Dimensions.get('window').height * 0.2,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: '#000000',
-                }}
-              >
-                <AnimatedLottieView source={require('../assets/animations/loading.json')} autoPlay loop />
+              <View style={styles.loadingContainer}>
+                <AnimatedLottieView source={require('../../assets/animations/loading.json')} autoPlay loop />
               </View>
             ) : null}
           </ScrollView>
@@ -110,7 +117,7 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
             }}
             enabled
           >
-            <View style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center', backgroundColor: '#000000' }}>
+            <View style={styles.inputContainer}>
               <TextInput
                 placeholder="Enter a prompt..."
                 style={TEXT_INPUT_STYLE}
@@ -119,13 +126,10 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
                 placeholderTextColor="#5a5a5a"
               />
               <TouchableOpacity
-                style={{
-                  alignSelf: 'flex-end',
-                  marginBottom: 10,
-                  opacity: context.prompt.length > 0 ? 1 : 0.2,
-                }}
+                style={{...styles.sendButton, opacity: context.prompt.length > 0 ? 1 : 0.2}}
                 onPress={() => {
-                  handleSend(context.prompt)
+                  if(context.prompt.length > 0)
+                    handleSend(context.prompt)
                 }}
               >
                 <FontAwesome5 name="arrow-up" size={32} color="white" />
@@ -137,15 +141,3 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#000000',
-  },
-  separator: {
-    height: 1,
-    width: '80%',
-  },
-})

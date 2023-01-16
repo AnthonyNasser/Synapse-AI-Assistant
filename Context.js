@@ -37,6 +37,7 @@ export function GlobalContextProvider({ children }) {
         .then((completion) => {
           if (completion.status === 200) {
             setKeyTested(true)
+            storeContext({ keyTested: true})
             clogger.success("API Key set to: '" + apiKey + "'")
           }
         })
@@ -45,6 +46,7 @@ export function GlobalContextProvider({ children }) {
         })
         .catch((error) => {
           clogger.error("Error setting API Key: '" + apiKey + "'")
+          clogger.error(error)
           setKeyTested(false)
         })
     } else {

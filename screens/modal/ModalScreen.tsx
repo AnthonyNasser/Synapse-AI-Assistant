@@ -1,10 +1,9 @@
 import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
-import { Platform, ScrollView, StyleSheet } from 'react-native'
-
-import EditScreenInfo from '../components/EditScreenInfo'
-import { Text, View } from '../components/Themed'
-import APIKeyInstructions from '../components/APIKeyInstructions'
+import { Platform, ScrollView } from 'react-native';
+import { Text } from '../../components/Themed'
+import APIKeyInstructions from '../../components/APIKeyInstructions'
+import styles from "./styles"
 
 type ModalScreenProps = {
   parameter?: string
@@ -37,29 +36,3 @@ export default function ModalScreen(props: ModalScreenProps) {
     </ScrollView>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundColor: '#000',
-    paddingVertical: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFF',
-  },
-  text: {
-    fontSize: 16,
-    color: '#FFF',
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    justifyContent: 'center',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-})
