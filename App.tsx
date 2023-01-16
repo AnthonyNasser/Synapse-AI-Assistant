@@ -1,6 +1,7 @@
-import { StatusBar } from "expo-status-bar"
-import { SafeAreaProvider } from "react-native-safe-area-context"
-import { GlobalContextProvider } from "./Context"
+import { StatusBar } from 'expo-status-bar'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { GlobalContextProvider } from './Context'
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
 import useCachedResources from "./hooks/useCachedResources"
 import useColorScheme from "./hooks/useColorScheme"
@@ -22,8 +23,10 @@ export default function App() {
     return (
       <GlobalContextProvider>
         <SafeAreaProvider>
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
+          <ActionSheetProvider>
+            <Navigation colorScheme={colorScheme} />
+          </ActionSheetProvider>
+            <StatusBar />
         </SafeAreaProvider>
       </GlobalContextProvider>
     )
