@@ -128,7 +128,8 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
               <TouchableOpacity
                 style={{...styles.sendButton, opacity: context.prompt.length > 0 ? 1 : 0.2}}
                 onPress={() => {
-                  handleSend(context.prompt)
+                  if(context.prompt.length > 0)
+                    handleSend(context.prompt)
                 }}
               >
                 <FontAwesome5 name="arrow-up" size={32} color="white" />

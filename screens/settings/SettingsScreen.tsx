@@ -21,10 +21,12 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
   useEffect(() => {
     setScreenLoading(true)
     getContext().then((storedContext: any) => {
-      const { apiKey, temperature, maxTokens, keyTested } = JSON.parse(storedContext)
       if (storedContext) {
+        const { apiKey, temperature, maxTokens, keyTested, model } = JSON.parse(storedContext)
+        
         context.setApiKey(apiKey)
         context.setTemperature(temperature)
+        context.setModel(model)
         context.setMaxTokens(maxTokens)
         context.setKeyTested(keyTested)
       }
