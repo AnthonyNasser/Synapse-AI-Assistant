@@ -22,6 +22,7 @@ const LONG_RANDOM_THRESHOLD = 25
 export default function ChatScreen({ navigation }: RootTabScreenProps<"Chat">) {
   const context = useGlobalContext()
   const [loading, setLoading] = React.useState<boolean>(false)
+  const [inputHeight, setInputHeight] = useState<number>(40)
   const [screenLoading, setScreenLoading] = useState<boolean>(true)
   const scrollViewRef = useRef<any>(null)
 
@@ -160,10 +161,15 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<"Chat">) {
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder="Enter a prompt..."
-                style={TEXT_INPUT_STYLE}
-                value={context.prompt}
+                style={[styles.textInput, {height: inputHeight > 40 ? inputHeight : 40}]}
+                onContentSizeChange={(event) => {
+                  const {contentSize} = event.nativeEvent
+                  setInputHeight(contentSize.height)
+                }}
                 onChangeText={context.setPrompt}
                 placeholderTextColor="#5a5a5a"
+                value={context.prompt}
+                multiline
               />
               <TouchableOpacity
                 style={{ ...styles.sendButton, opacity: context.prompt.length > 0 ? 1 : 0.2 }}
