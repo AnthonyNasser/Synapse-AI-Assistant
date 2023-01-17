@@ -14,6 +14,7 @@ import ScreenLoader from "../../components/ScreenLoader"
 import styles from "./styles"
 import * as StoreReview from "expo-store-review"
 import clogger from "../../utils/logger"
+import RegenerateButton from "../../components/RegenerateButton"
 
 const SHORT_RANDOM_THRESHOLD = 100
 const LONG_RANDOM_THRESHOLD = 25
@@ -60,6 +61,7 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<"Chat">) {
   const handleSend = async (prompt: string) => {
     setLoading(true)
     context.setPreviousPrompts(`${context.previousPrompts}${prompt.trim()}###endPrompt###`)
+    context.setPrompt("")
     let response: any = await makeTextCompletionRequest(
       context.apiKey,
       context.model,
@@ -69,7 +71,6 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<"Chat">) {
       context.temperature,
       context.maxTokens,
     )
-    context.setPrompt("")
     // hard coded fix for a bug
     if (response && response !== "400") {
       // check prompt and response for all instances of ###endPrompt### and ###endResponse### and remove them
@@ -130,7 +131,21 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<"Chat">) {
               <View style={styles.loadingContainer}>
                 <AnimatedLottieView source={require("../../assets/animations/loading.json")} autoPlay loop />
               </View>
-            ) : null}
+            ) : (
+              <>
+                {context.chatBoxes.length > 0 &&
+                  context.chatBoxes[context.chatBoxes.length - 1].response !== "Please save a valid API Key in Settings." &&
+                  context.chatBoxes[context.chatBoxes.length - 1].response !== "Request Failed" && (
+                    <RegenerateButton
+                      onPress={() => {
+                        setLoading(true)
+                        handleSend(context.chatBoxes[context.chatBoxes.length - 1].prompt)
+                        context.chatBoxes.pop()
+                      }}
+                    />
+                  )}
+              </>
+            )}
           </ScrollView>
           <KeyboardAvoidingView
             behavior="padding"
