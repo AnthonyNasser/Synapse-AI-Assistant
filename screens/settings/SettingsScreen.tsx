@@ -1,19 +1,18 @@
-import { Entypo, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons'
-import { Dimensions, Pressable, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { Entypo, FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons"
+import { Dimensions, Pressable, ScrollView, StyleSheet, TextInput, TouchableOpacity } from "react-native"
 import styles from "./styles"
 
-import { Text, View } from '../../components/Themed'
-import Slider from '@react-native-community/slider'
-import { useGlobalContext } from '../../Context'
-import { RootTabScreenProps } from '../../types'
-import { useEffect, useState } from 'react'
-import { getContext, storeContext } from '../../utils/storage'
-import ScreenLoader from '../../components/ScreenLoader'
-import { Picker } from '@react-native-picker/picker'
-import clogger from '../../utils/logger'
+import { Text, View } from "../../components/Themed"
+import Slider from "@react-native-community/slider"
+import { useGlobalContext } from "../../Context"
+import { RootTabScreenProps } from "../../types"
+import { useEffect, useState } from "react"
+import { getContext, storeContext } from "../../utils/storage"
+import ScreenLoader from "../../components/ScreenLoader"
+import { Picker } from "@react-native-picker/picker"
+import clogger from "../../utils/logger"
 
-
-export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'>) {
+export default function SettingsScreen({ navigation }: RootTabScreenProps<"Chat">) {
   const context = useGlobalContext()
   const [screenLoading, setScreenLoading] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
@@ -23,7 +22,7 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
     getContext().then((storedContext: any) => {
       if (storedContext) {
         const { apiKey, temperature, maxTokens, keyTested, model } = JSON.parse(storedContext)
-        
+
         context.setApiKey(apiKey)
         context.setTemperature(temperature)
         context.setModel(model)
@@ -46,9 +45,9 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
         <ScrollView contentContainerStyle={styles.container}>
           <View style={styles.titleContainer}>
             {context.keyTested ? (
-              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#000000' }}>
+              <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#000000" }}>
                 <Text style={styles.title}>
-                  API Key: {context.apiKey.substring(0, 5) + '...' + context.apiKey.substring(context.apiKey.length - 5)}
+                  API Key: {context.apiKey.substring(0, 5) + "..." + context.apiKey.substring(context.apiKey.length - 5)}
                 </Text>
                 <FontAwesome5 name="check-circle" size={24} style={{ marginLeft: 10 }} color="green" />
               </View>
@@ -61,7 +60,7 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
                   }}
                   placeholder="Enter API Key"
                   placeholderTextColor="#5a5a5a"
-                  style={{...styles.textInput, borderColor: !context.keyTested ? '#ba000d' : 'green',}}
+                  style={{ ...styles.textInput, borderColor: !context.keyTested ? "#ba000d" : "green" }}
                 />
                 {/* <Pressable
                   onPress={() =>
@@ -87,7 +86,7 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
                 <View style={styles.apiButtonContainer}>
                   <TouchableOpacity
                     onPress={async () => {
-                      if(context.apiKey) {
+                      if (context.apiKey) {
                         setLoading(true)
                         context.onSave()
                         await context.testAPIKey()
@@ -97,16 +96,12 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
                     style={styles.button}
                   >
                     <FontAwesome5 name="key" size={25} color="white" />
-                    <Text
-                      style={styles.buttonText}
-                    >
-                      Save Key
-                    </Text>
+                    <Text style={styles.buttonText}>Save Key</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={async () => {
-                      navigation.navigate('Modal', {
-                        parameter: 'API Key',
+                      navigation.navigate("Modal", {
+                        parameter: "API Key",
                         description: ``,
                         navigation: navigation,
                       } as any)
@@ -114,9 +109,7 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
                     style={styles.button}
                   >
                     <FontAwesome5 name="question-circle" size={25} color="white" />
-                    <Text style={styles.buttonText}>
-                      Get a Key
-                    </Text>
+                    <Text style={styles.buttonText}>Get a Key</Text>
                   </TouchableOpacity>
                 </View>
               ) : (
@@ -129,34 +122,30 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
                   style={styles.button}
                 >
                   <FontAwesome5 name="key" size={25} color="white" />
-                  <Text
-                    style={styles.buttonText}
-                  >
-                    Change Key
-                  </Text>
+                  <Text style={styles.buttonText}>Change Key</Text>
                 </TouchableOpacity>
               )}
             </>
           ) : (
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginLeft: 20, marginTop: 10 }}>Testing Your Key...</Text>
+            <Text style={{ color: "white", fontSize: 16, fontWeight: "bold", marginLeft: 20, marginTop: 10 }}>Testing Your Key...</Text>
           )}
           <View style={styles.titleContainer}>
             <Text style={styles.title}>
-              GPT-3 Model ={' '}
-              {context.model === 'text-davinci-003'
-                ? 'Davinci'
-                : context.model === 'text-curie-001'
-                ? 'Curie'
-                : context.model === 'text-babbage-001'
-                ? 'Babbage'
-                : context.model === 'text-ada-001'
-                ? 'Ada'
-                : 'Davinci'}
+              GPT-3 Model ={" "}
+              {context.model === "text-davinci-003"
+                ? "Davinci"
+                : context.model === "text-curie-001"
+                ? "Curie"
+                : context.model === "text-babbage-001"
+                ? "Babbage"
+                : context.model === "text-ada-001"
+                ? "Ada"
+                : "Davinci"}
             </Text>
             <Pressable
               onPress={() =>
-                navigation.navigate('Modal', {
-                  parameter: 'Select GPT-3 Model',
+                navigation.navigate("Modal", {
+                  parameter: "Select GPT-3 Model",
                   description: `Davinci (Max tokens per request: 4,000)
                   \nDavinci is the most advanced version of the GPT-3 model and is able to perform any task that the other models can do, with an added advantage of producing higher quality and longer output, and following instructions better. It also includes the feature to insert completions within text. The model is named after the famous artist, scientist, and inventor Leonardo da Vinci, who is considered a true "Renaissance man" for his numerous talents and achievements in a wide variety of fields. Training data goes up to June 2021.
                   \n\nCurie (Max tokens per request: 2,048)
@@ -176,86 +165,86 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
               <FontAwesome5 name="question-circle" size={25} color="white" />
             </Pressable>
           </View>
-          <View style={{ flexDirection: 'row', alignSelf: 'flex-start', marginTop: 20 }}>
+          <View style={{ flexDirection: "row", alignSelf: "flex-start", marginTop: 20 }}>
             <Pressable
               style={{
-                width: (Dimensions.get('window').width * 0.92) / 2.3,
-                flexDirection: 'row',
-                backgroundColor: context.model === 'text-davinci-003' ? 'white' : '#1F1F1F',
+                width: (Dimensions.get("window").width * 0.92) / 2.3,
+                flexDirection: "row",
+                backgroundColor: context.model === "text-davinci-003" ? "white" : "#1F1F1F",
                 height: 75,
-                alignItems: 'center',
-                justifyContent: 'center',
-                alignSelf: 'center',
+                alignItems: "center",
+                justifyContent: "center",
+                alignSelf: "center",
                 marginLeft: 20,
                 borderRadius: 10,
                 marginRight: 25,
               }}
               onPress={() => {
-                context.setModel('text-davinci-003')
+                context.setModel("text-davinci-003")
               }}
             >
-              <FontAwesome5 name="paint-brush" size={25} color={context.model === 'text-davinci-003' ? '#1F1F1F' : 'white'} style={{}} />
-              <Text style={{ ...styles.title, color: context.model === 'text-davinci-003' ? '#1F1F1F' : 'white' }}>Davinci</Text>
+              <FontAwesome5 name="paint-brush" size={25} color={context.model === "text-davinci-003" ? "#1F1F1F" : "white"} style={{}} />
+              <Text style={{ ...styles.title, color: context.model === "text-davinci-003" ? "#1F1F1F" : "white" }}>Davinci</Text>
             </Pressable>
             <Pressable
               style={{
-                width: (Dimensions.get('window').width * 0.92) / 2.3,
-                flexDirection: 'row',
-                backgroundColor: context.model === 'text-curie-001' ? 'white' : '#1F1F1F',
+                width: (Dimensions.get("window").width * 0.92) / 2.3,
+                flexDirection: "row",
+                backgroundColor: context.model === "text-curie-001" ? "white" : "#1F1F1F",
                 height: 75,
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                alignSelf: 'center',
+                alignItems: "center",
+                justifyContent: "flex-start",
+                alignSelf: "center",
                 paddingHorizontal: 10,
 
                 borderRadius: 10,
               }}
               onPress={() => {
-                context.setModel('text-curie-001')
+                context.setModel("text-curie-001")
               }}
             >
-              <FontAwesome5 name="atom" size={25} color={context.model === 'text-curie-001' ? '#1F1F1F' : 'white'} style={{ marginLeft: 25 }} />
-              <Text style={{ ...styles.title, color: context.model === 'text-curie-001' ? '#1F1F1F' : 'white' }}>Curie</Text>
+              <FontAwesome5 name="atom" size={25} color={context.model === "text-curie-001" ? "#1F1F1F" : "white"} style={{ marginLeft: 25 }} />
+              <Text style={{ ...styles.title, color: context.model === "text-curie-001" ? "#1F1F1F" : "white" }}>Curie</Text>
             </Pressable>
           </View>
-          <View style={{ flexDirection: 'row', alignSelf: 'flex-start', marginTop: 20 }}>
+          <View style={{ flexDirection: "row", alignSelf: "flex-start", marginTop: 20 }}>
             <Pressable
               style={{
-                width: (Dimensions.get('window').width * 0.92) / 2.3,
-                flexDirection: 'row',
-                backgroundColor: context.model === 'text-babbage-001' ? 'white' : '#1F1F1F',
+                width: (Dimensions.get("window").width * 0.92) / 2.3,
+                flexDirection: "row",
+                backgroundColor: context.model === "text-babbage-001" ? "white" : "#1F1F1F",
                 height: 75,
-                alignItems: 'center',
-                justifyContent: 'center',
-                alignSelf: 'center',
+                alignItems: "center",
+                justifyContent: "center",
+                alignSelf: "center",
                 marginLeft: 20,
                 borderRadius: 10,
                 marginRight: 25,
               }}
               onPress={() => {
-                context.setModel('text-babbage-001')
+                context.setModel("text-babbage-001")
               }}
             >
-              <MaterialCommunityIcons name="abacus" size={25} color={context.model === 'text-babbage-001' ? '#1F1F1F' : 'white'} style={{}} />
-              <Text style={{ ...styles.title, color: context.model === 'text-babbage-001' ? '#1F1F1F' : 'white' }}>Babbage</Text>
+              <MaterialCommunityIcons name="abacus" size={25} color={context.model === "text-babbage-001" ? "#1F1F1F" : "white"} style={{}} />
+              <Text style={{ ...styles.title, color: context.model === "text-babbage-001" ? "#1F1F1F" : "white" }}>Babbage</Text>
             </Pressable>
             <Pressable
               style={{
-                width: (Dimensions.get('window').width * 0.92) / 2.3,
-                flexDirection: 'row',
-                backgroundColor: context.model === 'text-ada-001' ? 'white' : '#1F1F1F',
+                width: (Dimensions.get("window").width * 0.92) / 2.3,
+                flexDirection: "row",
+                backgroundColor: context.model === "text-ada-001" ? "white" : "#1F1F1F",
                 height: 75,
-                alignItems: 'center',
-                justifyContent: 'center',
-                alignSelf: 'center',
+                alignItems: "center",
+                justifyContent: "center",
+                alignSelf: "center",
                 borderRadius: 10,
               }}
               onPress={() => {
-                context.setModel('text-ada-001')
+                context.setModel("text-ada-001")
               }}
             >
-              <Entypo name="classic-computer" size={25} color={context.model === 'text-ada-001' ? '#1F1F1F' : 'white'} style={{}} />
-              <Text style={{ ...styles.title, color: context.model === 'text-ada-001' ? '#1F1F1F' : 'white' }}>Ada</Text>
+              <Entypo name="classic-computer" size={25} color={context.model === "text-ada-001" ? "#1F1F1F" : "white"} style={{}} />
+              <Text style={{ ...styles.title, color: context.model === "text-ada-001" ? "#1F1F1F" : "white" }}>Ada</Text>
             </Pressable>
           </View>
           {/* <Picker
@@ -286,8 +275,8 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
             <Text style={styles.title}>Max Tokens = {context.maxTokens}</Text>
             <Pressable
               onPress={() =>
-                navigation.navigate('Modal', {
-                  parameter: 'Max Tokens',
+                navigation.navigate("Modal", {
+                  parameter: "Max Tokens",
                   description: `In OpenAI's API, the "max_tokens" parameter determines the maximum number of tokens (i.e., words and word pieces) that the model will consider when generating text. This can be used to limit the length of the generated text or to ensure that the model does not spend too much time or computational resources on a single request.
         \nOne reason you might want to limit the number of tokens in your OpenAI queries is to save time and resources. Generating long pieces of text can be computationally expensive, and if you only need a short piece of text or are making many requests in a short period of time, limiting the number of tokens can help you stay within your usage limits and avoid running out of resources. Limiting the number of tokens can also be useful if you want to ensure that the model stays focused on a specific topic or prompt and does not generate unrelated or tangential text.`,
                   navigation: navigation,
@@ -315,8 +304,8 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<'Chat'
             <Text style={styles.title}>Temperature = {context.temperature.toFixed(2)}</Text>
             <Pressable
               onPress={() =>
-                navigation.navigate('Modal', {
-                  parameter: 'Temperature',
+                navigation.navigate("Modal", {
+                  parameter: "Temperature",
                   description: `The temperature parameter in OpenAI determines how random or certain the model's predictions will be.
                 \nA higher temperature will cause the model to produce more diverse and random predictions. This can be useful in certain situations, such as when you want the model to explore a wider range of possibilities or be less predictable. However, a higher temperature can also cause the model to make more mistakes and produce less accurate predictions, so it's important to use it carefully.
                 \nA lower temperature will cause the model to be more certain and confident in its predictions. This can be useful in situations where you want the model to be more reliable and accurate, but it can also make the model's output less diverse and more predictable. It's important to find the right balance between high and low temperatures depending on your specific needs.

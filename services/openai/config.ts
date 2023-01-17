@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from 'openai'
+import { Configuration, OpenAIApi } from "openai"
 
 // TODO: There's probably a better way to do this
 export const configureOpenAI = (apiKey: string) => {

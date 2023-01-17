@@ -1,4 +1,4 @@
-import { logger, consoleTransport } from 'react-native-logs'
+import { logger, consoleTransport } from "react-native-logs"
 
 const defaultConfig = {
   levels: {
@@ -8,18 +8,18 @@ const defaultConfig = {
     error: 3,
     success: 4,
   },
-  severity: 'debug',
+  severity: "debug",
   transport: consoleTransport,
   transportOptions: {
     colors: {
-      info: 'blueBright',
-      warn: 'yellowBright',
-      error: 'redBright',
-      success: 'greenBright',
+      info: "blueBright",
+      warn: "yellowBright",
+      error: "redBright",
+      success: "greenBright",
     },
   },
   async: true,
-  dateFormat: 'time',
+  dateFormat: "time",
   printLevel: true,
   printDate: true,
   enabled: true,

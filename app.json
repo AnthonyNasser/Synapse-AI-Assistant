@@ -2,7 +2,7 @@
   "expo": {
     "name": "chat_gpt_app",
     "slug": "chat-gpt-app",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/OpenAI-Explorer-Logo.png",
     "scheme": "myapp",
@@ -24,7 +24,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/OpenAI-Explorer-Logo.png",
         "backgroundColor": "#000000"
-      }
+      },
+      "package": "com.anthonynasser.chatgptapp"
     },
     "web": {
       "favicon": "./assets/images/OpenAI-Explorer-Logo.png"

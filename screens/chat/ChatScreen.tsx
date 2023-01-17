@@ -1,24 +1,24 @@
-import { KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native'
-import { View } from '../../components/Themed'
-import { RootTabScreenProps } from '../../types'
-import 'react-native-url-polyfill/auto'
-import React, { useEffect, useRef, useState } from 'react'
-import { useGlobalContext } from '../../Context'
-import { TEXT_INPUT_STYLE } from '../../styles'
-import { FontAwesome5 } from '@expo/vector-icons'
-import ChatBox from '../../components/ChatBox'
-import AnimatedLottieView from 'lottie-react-native'
-import makeTextCompletionRequest from '../../services/openai/textCompletionRequest'
-import { getContext, storeContext} from '../../utils/storage'
-import ScreenLoader from '../../components/ScreenLoader'
+import { KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from "react-native"
+import { View } from "../../components/Themed"
+import { RootTabScreenProps } from "../../types"
+import "react-native-url-polyfill/auto"
+import React, { useEffect, useRef, useState } from "react"
+import { useGlobalContext } from "../../Context"
+import { TEXT_INPUT_STYLE } from "../../styles"
+import { FontAwesome5 } from "@expo/vector-icons"
+import ChatBox from "../../components/ChatBox"
+import AnimatedLottieView from "lottie-react-native"
+import makeTextCompletionRequest from "../../services/openai/textCompletionRequest"
+import { getContext, storeContext } from "../../utils/storage"
+import ScreenLoader from "../../components/ScreenLoader"
 import styles from "./styles"
-import * as StoreReview from 'expo-store-review';
-import clogger from '../../utils/logger'
+import * as StoreReview from "expo-store-review"
+import clogger from "../../utils/logger"
 
-const SHORT_RANDOM_THRESHOLD = 100;
-const LONG_RANDOM_THRESHOLD = 25;
+const SHORT_RANDOM_THRESHOLD = 100
+const LONG_RANDOM_THRESHOLD = 25
 
-export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
+export default function ChatScreen({ navigation }: RootTabScreenProps<"Chat">) {
   const context = useGlobalContext()
   const [loading, setLoading] = React.useState<boolean>(false)
   const [screenLoading, setScreenLoading] = useState<boolean>(true)
@@ -40,7 +40,7 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
         } else {
           context.setChatBoxes([
             {
-              prompt: 'Query OpenAI by entering a prompt below.',
+              prompt: "Query OpenAI by entering a prompt below.",
               response: `Please note that this app is not affiliated with OpenAI in any way.
             \nThis app's features include:
             \n1. The ability to use your own API Key (see settings for more info)
@@ -58,24 +58,33 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
 
   const handleSend = async (prompt: string) => {
     setLoading(true)
-    context.setPrompt('')
-    const response: any = await makeTextCompletionRequest(context.apiKey, context.model, prompt, context.temperature, context.maxTokens)
-    if (response && response !== '400') {
-      const newChatBoxes = [...context.chatBoxes, {prompt: prompt.trim(), response: response.trim()}]
+    context.setPreviousPrompts(`${context.previousPrompts}\n${prompt.trim()}\n`)
+    const response: any = await makeTextCompletionRequest(
+      context.apiKey,
+      context.model,
+      context.previousPrompts,
+      prompt,
+      context.previousResponses,
+      context.temperature,
+      context.maxTokens,
+    )
+    context.setPrompt("")
+    if (response && response !== "400") {
+      const newChatBoxes = [...context.chatBoxes, { prompt: prompt.trim(), response: response.trim() }]
       context.setChatBoxes(newChatBoxes)
-      storeContext({...context, chatBoxes: newChatBoxes})
-
-      const isLongResponse = response.trim().length > 500;
+      storeContext({ ...context, chatBoxes: newChatBoxes })
+      context.setPreviousResponses(`${context.previousResponses}\n${response.trim()}\n`)
+      const isLongResponse = response.trim().length > 500
       const randomNumber = isLongResponse ? Math.floor(Math.random() * LONG_RANDOM_THRESHOLD) : Math.floor(Math.random() * SHORT_RANDOM_THRESHOLD)
-      if(randomNumber === 0 && await StoreReview.hasAction() && await StoreReview.isAvailableAsync()) {
+      if (randomNumber === 0 && (await StoreReview.hasAction()) && (await StoreReview.isAvailableAsync())) {
         clogger.info("Requesting Review...")
-        StoreReview.requestReview();
+        StoreReview.requestReview()
       }
     } else {
       context.setChatBoxes([
         {
-          prompt: 'Request Failed',
-          response: 'Please save a valid API Key in Settings.',
+          prompt: "Request Failed",
+          response: "Please save a valid API Key in Settings.",
         },
       ])
     }
@@ -102,7 +111,7 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
             })}
             {loading ? (
               <View style={styles.loadingContainer}>
-                <AnimatedLottieView source={require('../../assets/animations/loading.json')} autoPlay loop />
+                <AnimatedLottieView source={require("../../assets/animations/loading.json")} autoPlay loop />
               </View>
             ) : null}
           </ScrollView>
@@ -110,10 +119,10 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
             behavior="padding"
             keyboardVerticalOffset={100}
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: '#000000',
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#000000",
             }}
             enabled
           >
@@ -126,10 +135,9 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'Chat'>) {
                 placeholderTextColor="#5a5a5a"
               />
               <TouchableOpacity
-                style={{...styles.sendButton, opacity: context.prompt.length > 0 ? 1 : 0.2}}
+                style={{ ...styles.sendButton, opacity: context.prompt.length > 0 ? 1 : 0.2 }}
                 onPress={() => {
-                  if(context.prompt.length > 0)
-                    handleSend(context.prompt)
+                  if (context.prompt.length > 0) handleSend(context.prompt)
                 }}
               >
                 <FontAwesome5 name="arrow-up" size={32} color="white" />
