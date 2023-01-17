@@ -5,6 +5,7 @@ import { useState } from "react"
 import * as Clipboard from "expo-clipboard"
 import { useGlobalContext } from "../Context"
 import makeTextCompletionRequest from "../services/openai/textCompletionRequest"
+import { storeContext } from "../utils/storage"
 
 type ChatBoxProps = {
   prompt: string
@@ -23,32 +24,6 @@ export default function ChatBox(props: ChatBoxProps) {
     setTimeout(() => {
       setCopied(false)
     }, 2000)
-  }
-
-  const handleSend = async (prompt: string) => {
-    setLoading(true)
-    context.setPrompt("")
-    const response: any = await makeTextCompletionRequest(
-      context.apiKey,
-      context.model,
-      context.previousPrompts,
-      context.prompt,
-      context.previousResponses,
-      context.temperature,
-      context.maxTokens,
-    )
-    if (response && response !== "400") {
-      context.setChatBoxes([...context.chatBoxes, { id: `${prompt}${Math.random()}`, prompt: prompt.trim(), response: response.trim() }])
-    } else {
-      context.setChatBoxes([
-        {
-          id: `${prompt}${Math.random()}`,
-          prompt: "Request Failed",
-          response: "Please save a valid API Key in Settings.",
-        },
-      ])
-    }
-    setLoading(false)
   }
 
   return (
@@ -100,7 +75,7 @@ export default function ChatBox(props: ChatBoxProps) {
         >
           <FontAwesome5 name="trash" size={20} color="#FFF" style={{}} />
         </Pressable>
-        <Pressable
+        {/* <Pressable
           style={{
             backgroundColor: "#1C1C1C",
             justifyContent: "center",
@@ -115,7 +90,7 @@ export default function ChatBox(props: ChatBoxProps) {
           }}
         >
           <FontAwesome5 name="retweet" size={20} color="#FFF" style={{}} />
-        </Pressable>
+        </Pressable> */}
       </View>
       <View style={styles.box}>
         <Text
