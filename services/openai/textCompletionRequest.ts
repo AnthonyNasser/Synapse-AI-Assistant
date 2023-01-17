@@ -19,16 +19,10 @@ const makeTextCompletionRequest = async (
   await openai
     .createCompletion({
       model: model,
-      prompt:
-        "Previous prompts were: \n" +
-        previousPrompts +
-        "\n Previous responses were: \n" +
-        previousResponses +
-        "\n You are a virtual assistant, respond concisely in complete sentences to this new prompt based on that context: \n" +
-        prompt,
+      prompt: previousPrompts + previousResponses + prompt, // should look like "What is your name? ###endPrompt### My name is ###endResponse###"
       temperature: temperature,
       max_tokens: max_tokens,
-      // stop: ["\n"],
+      stop: ["###endPrompt###, ###endResponse###"],
     })
     .then((completion: any) => {
       clogger.info("Text Completion Request Results...\n" + completion.data.choices[0].text.toString() + "\n")

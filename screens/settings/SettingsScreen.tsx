@@ -9,8 +9,7 @@ import { RootTabScreenProps } from "../../types"
 import { useEffect, useState } from "react"
 import { getContext, storeContext } from "../../utils/storage"
 import ScreenLoader from "../../components/ScreenLoader"
-import { Picker } from "@react-native-picker/picker"
-import clogger from "../../utils/logger"
+// import clogger from "../../utils/logger"
 
 export default function SettingsScreen({ navigation }: RootTabScreenProps<"Chat">) {
   const context = useGlobalContext()
@@ -165,7 +164,7 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<"Chat"
               <FontAwesome5 name="question-circle" size={25} color="white" />
             </Pressable>
           </View>
-          <View style={{ flexDirection: "row", alignSelf: "flex-start", marginTop: 20 }}>
+          <View style={{ flexDirection: "row", alignSelf: "flex-start", marginTop: 20, backgroundColor: "#000000" }}>
             <Pressable
               style={{
                 width: (Dimensions.get("window").width * 0.92) / 2.3,
@@ -207,7 +206,7 @@ export default function SettingsScreen({ navigation }: RootTabScreenProps<"Chat"
               <Text style={{ ...styles.title, color: context.model === "text-curie-001" ? "#1F1F1F" : "white" }}>Curie</Text>
             </Pressable>
           </View>
-          <View style={{ flexDirection: "row", alignSelf: "flex-start", marginTop: 20 }}>
+          <View style={{ flexDirection: "row", alignSelf: "flex-start", marginTop: 20, backgroundColor: "#000000" }}>
             <Pressable
               style={{
                 width: (Dimensions.get("window").width * 0.92) / 2.3,

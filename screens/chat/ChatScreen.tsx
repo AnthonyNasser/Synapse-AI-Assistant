@@ -58,8 +58,8 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<"Chat">) {
 
   const handleSend = async (prompt: string) => {
     setLoading(true)
-    context.setPreviousPrompts(`${context.previousPrompts}\n${prompt.trim()}\n`)
-    const response: any = await makeTextCompletionRequest(
+    context.setPreviousPrompts(`${context.previousPrompts}${prompt.trim()}###endPrompt###`)
+    let response: any = await makeTextCompletionRequest(
       context.apiKey,
       context.model,
       context.previousPrompts,
@@ -69,11 +69,27 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<"Chat">) {
       context.maxTokens,
     )
     context.setPrompt("")
+    // hard coded fix for a bug
     if (response && response !== "400") {
+      // check prompt and response for all instances of ###endPrompt### and ###endResponse### and remove them
+      while (prompt.includes("###endPrompt###")) {
+        prompt = prompt.replace("###endPrompt###", "")
+      }
+      while (prompt.includes("###endResponse###")) {
+        prompt = prompt.replace("###endResponse###", "")
+      }
+      while (response.includes("###endPrompt###")) {
+        response = response.replace("###endPrompt###", "")
+      }
+      while (response.includes("###endResponse###")) {
+        response = response.replace("###endResponse###", "")
+      }
+      // regex remove all special characters from beginning of string
+      response = response.replace(/^[^a-zA-Z0-9]+/, "")
       const newChatBoxes = [...context.chatBoxes, { prompt: prompt.trim(), response: response.trim() }]
       context.setChatBoxes(newChatBoxes)
       storeContext({ ...context, chatBoxes: newChatBoxes })
-      context.setPreviousResponses(`${context.previousResponses}\n${response.trim()}\n`)
+      context.setPreviousResponses(`${context.previousResponses}${response.trim()}###endResponse###`)
       const isLongResponse = response.trim().length > 500
       const randomNumber = isLongResponse ? Math.floor(Math.random() * LONG_RANDOM_THRESHOLD) : Math.floor(Math.random() * SHORT_RANDOM_THRESHOLD)
       if (randomNumber === 0 && (await StoreReview.hasAction()) && (await StoreReview.isAvailableAsync())) {

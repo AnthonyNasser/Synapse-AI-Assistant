@@ -68,6 +68,8 @@ export function GlobalContextProvider({ children }) {
 
   const clearChatBoxes = () => {
     setChatBoxes([])
+    setPreviousPrompts("")
+    setPreviousResponses("")
   }
 
   const onSave = () => {
