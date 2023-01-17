@@ -28,7 +28,15 @@ export default function ChatBox(props: ChatBoxProps) {
   const handleSend = async (prompt: string) => {
     setLoading(true)
     context.setPrompt("")
-    const response: any = await makeTextCompletionRequest(context.apiKey, context.model, prompt, context.temperature, context.maxTokens)
+    const response: any = await makeTextCompletionRequest(
+      context.apiKey,
+      context.model,
+      context.previousPrompts,
+      context.prompt,
+      context.previousResponses,
+      context.temperature,
+      context.maxTokens,
+    )
     if (response && response !== "400") {
       context.setChatBoxes([...context.chatBoxes, { id: `${prompt}${Math.random()}`, prompt: prompt.trim(), response: response.trim() }])
     } else {
@@ -50,7 +58,7 @@ export default function ChatBox(props: ChatBoxProps) {
         marginTop: 10,
       }}
     >
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#000000" }}>
         <Text
           style={{
             color: "#ccc",
